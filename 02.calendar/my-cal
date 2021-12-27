@@ -1,60 +1,37 @@
 #!/usr/bin/env ruby
 
-require "date"
+require 'date'
 require 'optparse'
 
 opt = OptionParser.new
 
 params = {}
 
-opt.on('-m:') {|v| params[:m] = v }
-opt.on('-y:') {|v| params[:y] = v }
+opt.on('-month:') { |v| params[:month] = v }
+opt.on('-year:') { |v| params[:year] = v }
 
 opt.parse!(ARGV)
 
-specified_month = params[:m].to_i
+specified_month = params[:month].to_i
 specified_month = Date.today.month if specified_month == 0
-specified_year = params[:y].to_i
+specified_year = params[:year].to_i
 specified_year = Date.today.year if specified_year == 0
+specified_date = Date.new(specified_year, specified_month)
+last_day_of_month = Date.new(specified_year, specified_month, -1).day
+days = (1..last_day_of_month)
+todays_date = Date.today.day
 
-def specified_date(x, y)
-  date = Date.new(x, y)
-  this_month = date.month
-  this_year = date.year
-  
-  last_day_of_month = Date.new(this_year, this_month, -1).day
-  last_youbi_of_month = Date.new(this_year, this_month, -1).wday
-  youbi_on_the_first_day_of_month = 1 - ((last_day_of_month - last_youbi_of_month) % 7 - 7)
-  if youbi_on_the_first_day_of_month > 6
-    youbi_on_the_first_day_of_month = youbi_on_the_first_day_of_month - 7
-  end
-
-  print("     ", this_month, "月", " ", this_year, "\n")
-  print("日", " ", "月", " ", "火", " ", "水", " ", "木", " ", "金", " ", "土", "\n")
-
-  youbi_on_the_first_day_of_month.times do
-    print "   "
-  end
-  
-  todays_date = Date.today.day
-  todays_month = Date.today.month
-  todays_year = Date.today.year
-  days = (1..last_day_of_month)
-  days.each{ |a|
-    if a < 10
-      if [todays_month, todays_year] == [this_month, this_year] && a == todays_date
-        print "\e[47m", "\e[30m", " ", todays_date, "\e[0m", " "
-      else
-        print " ", a, " "
-      end
-    elsif [todays_month, todays_year] == [this_month, this_year] && a == todays_date
-      print "\e[47m", "\e[30m", todays_date, "\e[0m", " "
-    else
-      print a, " "
-    end
-    print "\n" if (a + youbi_on_the_first_day_of_month) % 7 == 0
-  }
-  print "" # これを入れないと、カレンダー末尾に「1..31」と表示されてしまいます。
+puts "     #{specified_month}月 #{specified_year}"
+puts '日 月 火 水 木 金 土'
+specified_date.wday.times do
+  print '   '
 end
-
-puts specified_date(specified_year, specified_month)
+days.each do |day|
+  if [Date.today.month, Date.today.year] == [specified_month, specified_year] && day == todays_date
+    print "\e[47m\e[30m#{todays_date.to_s.rjust(2)}\e[0m "
+  else
+    print "#{day.to_s.rjust(2)} "
+  end
+  print "\n" if (day + specified_date.wday) % 7 == 0
+end
+print "\n"
