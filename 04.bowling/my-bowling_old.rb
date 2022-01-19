@@ -36,3 +36,5 @@ frames.each_with_index do |frame, n|
     end
 end
 puts point
+
+# hoge
