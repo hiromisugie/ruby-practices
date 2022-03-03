@@ -16,12 +16,10 @@ end
 
 def original_table
   files = Dir.glob('*').sort
+  return [] if files.empty?
+
   elements_per_column = (files.size.to_f / NUMBER_OF_COLUMN).ceil
-  if files == []
-    []
-  else
-    files.each_slice(elements_per_column).to_a
-  end
+  files.each_slice(elements_per_column).to_a
 end
 
 def adjust_table(table)
