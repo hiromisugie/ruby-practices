@@ -8,7 +8,7 @@ def main
   display_table = adjust_table(original_table_result).transpose
   display_table.each do |column|
     column.each_with_index do |cell, number|
-      print cell.ljust(build_space(original_table_result)[number])
+      print cell.to_s.ljust(build_space(original_table_result)[number])
     end
     print "\n"
   end
@@ -28,9 +28,6 @@ def adjust_table(table)
   max_size = table.map(&:size).max
   filled_table = table.map do |row|
     row.values_at(0...max_size)
-  end
-  filled_table.each do |row|
-    row.map! { |x| x.nil? ? '' : x }
   end
 end
 
