@@ -8,10 +8,10 @@ def main
   characters_per_column = count_characters_per_column(columns)
   rows = align_number_of_files_in_column(columns).transpose
   rows.each do |row|
-    hoge = row.map.with_index do |cell, number|
+    rows_with_margin = row.map.with_index do |cell, number|
       cell.to_s.ljust(characters_per_column[number])
     end
-    puts hoge.join
+    puts rows_with_margin.join
   end
 end
 
