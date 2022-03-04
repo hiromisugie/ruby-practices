@@ -8,7 +8,7 @@ def main
   display_table = align_number_of_files_in_column(columns).transpose
   display_table.each do |column|
     hoge = column.map.with_index do |cell, number|
-      cell.to_s.ljust(build_space(columns)[number])
+      cell.to_s.ljust(count_characters_per_column(columns)[number])
     end
     puts hoge.join
   end
@@ -29,8 +29,8 @@ def align_number_of_files_in_column(columns)
   end
 end
 
-def build_space(table)
-  table.map do |row|
+def count_characters_per_column(columns)
+  columns.map do |row|
     max_number_of_characters = row.max_by(&:size)
     max_number_of_characters.size + NUMBER_OF_SPACE
   end
