@@ -24,8 +24,8 @@ end
 
 def align_number_of_files_in_column(columns)
   max_size = columns.map(&:size).max
-  filled_table = columns.map do |row|
-    row.values_at(0...max_size)
+  filled_table = columns.map do |column|
+    column.values_at(0...max_size)
   end
 end
 
