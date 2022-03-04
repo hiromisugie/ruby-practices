@@ -30,8 +30,8 @@ def align_number_of_files_in_column(columns)
 end
 
 def count_characters_per_column(columns)
-  columns.map do |row|
-    max_number_of_characters = row.max_by(&:size)
+  columns.map do |column|
+    max_number_of_characters = column.max_by(&:size)
     max_number_of_characters.size + NUMBER_OF_SPACE
   end
 end
