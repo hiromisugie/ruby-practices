@@ -4,17 +4,17 @@ NUMBER_OF_COLUMN = 3
 NUMBER_OF_SPACE = 4
 
 def main
-  original_table_result = original_table
-  display_table = adjust_table(original_table_result).transpose
+  columns = make_columns
+  display_table = adjust_table(columns).transpose
   display_table.each do |column|
     hoge = column.map.with_index do |cell, number|
-      cell.to_s.ljust(build_space(original_table_result)[number])
+      cell.to_s.ljust(build_space(columns)[number])
     end
     puts hoge.join
   end
 end
 
-def original_table
+def make_columns
   files = Dir.glob('*').sort
   return [] if files.empty?
 
