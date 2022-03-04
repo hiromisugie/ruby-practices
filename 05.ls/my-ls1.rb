@@ -5,7 +5,7 @@ NUMBER_OF_SPACE = 4
 
 def main
   columns = make_columns
-  display_table = adjust_table(columns).transpose
+  display_table = align_number_of_files_in_column(columns).transpose
   display_table.each do |column|
     hoge = column.map.with_index do |cell, number|
       cell.to_s.ljust(build_space(columns)[number])
@@ -22,9 +22,9 @@ def make_columns
   files.each_slice(elements_per_column).to_a
 end
 
-def adjust_table(table)
-  max_size = table.map(&:size).max
-  filled_table = table.map do |row|
+def align_number_of_files_in_column(columns)
+  max_size = columns.map(&:size).max
+  filled_table = columns.map do |row|
     row.values_at(0...max_size)
   end
 end
