@@ -5,10 +5,11 @@ NUMBER_OF_SPACE = 4
 
 def main
   columns = make_columns
+  characters_per_column = count_characters_per_column(columns)
   display_table = align_number_of_files_in_column(columns).transpose
   display_table.each do |column|
     hoge = column.map.with_index do |cell, number|
-      cell.to_s.ljust(count_characters_per_column(columns)[number])
+      cell.to_s.ljust(characters_per_column[number])
     end
     puts hoge.join
   end
