@@ -7,7 +7,7 @@ def main
   original_table_result = original_table
   display_table = adjust_table(original_table_result).transpose
   display_table.each do |column|
-    hoge = column.each_with_index do |cell, number|
+    hoge = column.map.with_index do |cell, number|
       cell.to_s.ljust(build_space(original_table_result)[number])
     end
     puts hoge.join
