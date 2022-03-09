@@ -10,10 +10,10 @@ def main
   characters_per_column = count_characters_per_column(columns)
   rows = align_number_of_files_in_column(columns).transpose
   rows.each do |row|
-    rows_with_margin = row.map.with_index do |file_or_folder, number|
+    row_with_margin = row.map.with_index do |file_or_folder, number|
       file_or_folder.to_s.ljust(characters_per_column[number])
     end
-    puts rows_with_margin.join
+    puts row_with_margin.join
   end
 end
 
