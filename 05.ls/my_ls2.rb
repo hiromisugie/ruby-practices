@@ -18,11 +18,14 @@ def main
 end
 
 def make_columns
-  files = Dir.glob('*')
+  if ARGV.size.zero?
+    files = Dir.glob('*')
+  else
+    opt = OptionParser.new
+    opt.on('-a', 'add File::FNM_DOTMATCH files') { files = Dir.glob('*', File::FNM_DOTMATCH) }
+    opt.parse(ARGV)
+  end
 
-  opt = OptionParser.new
-  opt.on('-a', 'add File::FNM_DOTMATCH files') { files = Dir.glob('*', File::FNM_DOTMATCH) }
-  opt.parse(ARGV)
   return [] if files.empty?
 
   elements_per_column = (files.size.to_f / NUMBER_OF_COLUMN).ceil
