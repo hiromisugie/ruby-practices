@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
 NUMBER_OF_COLUMN = 3
 NUMBER_OF_SPACE = 4
 
@@ -17,6 +19,10 @@ end
 
 def make_columns
   files = Dir.glob('*').sort
+
+  opt = OptionParser.new
+  opt.on('-a', 'add File::FNM_DOTMATCH files') { files = Dir.glob('*', File::FNM_DOTMATCH).sort }
+  opt.parse(ARGV)
   return [] if files.empty?
 
   elements_per_column = (files.size.to_f / NUMBER_OF_COLUMN).ceil
