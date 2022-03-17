@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'date'
+require 'optparse'
+
+opt = OptionParser.new
+
+params = {}
+
+opt.on('-m:') { |v| params[:month] = v }
+opt.on('-y:') { |v| params[:year] = v }
+
+opt.parse!(ARGV)
+
+specified_month = params[:month] ? params[:month].to_i : Date.today.month
+specified_year = params[:year] ? params[:year].to_i : Date.today.year
+specified_date = Date.new(specified_year, specified_month)
+last_day_of_month = Date.new(specified_year, specified_month, -1).day
+days = (1..last_day_of_month)
+todays_day = Date.today.day
+
+puts "     #{specified_month}月 #{specified_year}"
+puts '日 月 火 水 木 金 土'
+specified_date.wday.times do
+  print '   '
+end
+days.each do |day|
+  if [Date.today.month, Date.today.year] == [specified_month, specified_year] && day == todays_day
+    print "\e[47m\e[30m#{todays_day.to_s.rjust(2)}\e[0m "
+  else
+    print "#{day.to_s.rjust(2)} "
+  end
+  print "\n" if (day + specified_date.wday) % 7 == 0
+end
+print "\n"
