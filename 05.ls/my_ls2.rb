@@ -18,13 +18,13 @@ def main
 end
 
 def make_columns
-  if ARGV.size.zero?
-    files = Dir.glob('*')
-  else
-    opt = OptionParser.new
-    opt.on('-a', 'add File::FNM_DOTMATCH files') { files = Dir.glob('*', File::FNM_DOTMATCH) }
-    opt.parse(ARGV)
-  end
+  options = ARGV.getopts('a')
+  files =
+    if options['a']
+      Dir.glob('*', File::FNM_DOTMATCH)
+    else
+      Dir.glob('*')
+    end
 
   return [] if files.empty?
 
