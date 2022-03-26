@@ -18,18 +18,18 @@ def main
 end
 
 def make_columns
-  options = ARGV.getopts('a')
+  options = ARGV.getopts('r')
   files =
-    if options['a']
-      Dir.glob('*', File::FNM_DOTMATCH)
+    if options['r']
+      Dir.glob('*').sort.reverse
     else
-      Dir.glob('*')
+      Dir.glob('*').sort
     end
 
   return [] if files.empty?
 
   elements_per_column = (files.size.to_f / NUMBER_OF_COLUMN).ceil
-  files.sort.each_slice(elements_per_column).to_a
+  files.each_slice(elements_per_column).to_a
 end
 
 def align_number_of_files_in_column(columns)
