@@ -8,43 +8,15 @@ NUMBER_OF_COLUMN = 3
 NUMBER_OF_SPACE = 4
 
 def main
-  columns = make_columns
-  characters_per_column = count_characters_per_column(columns)
-  rows = align_number_of_files_in_column(columns).transpose
-  rows.each do |row|
-    row_with_margin = row.map.with_index do |file_or_folder, number|
-      file_or_folder.to_s.ljust(characters_per_column[number])
-    end
-    puts row_with_margin.join
-  end
+  options = ARGV.getopts('l')
+  if options['l']
+    l_option
+  else
+    other_than_l_option
+  end  
 end
 
-def make_columns
-  return [] if sorted_files.empty?
-
-  elements_per_column = (sorted_files.size.to_f / NUMBER_OF_COLUMN).ceil
-  sorted_files.each_slice(elements_per_column).to_a
-end
-
-def sorted_files
-  Dir.glob('*').sort
-end
-
-def align_number_of_files_in_column(columns)
-  max_size = columns.map(&:size).max
-  columns.map do |column|
-    column.values_at(0...max_size)
-  end
-end
-
-def count_characters_per_column(columns)
-  columns.map do |column|
-    max_number_of_characters = column.max_by(&:size)
-    max_number_of_characters.size + NUMBER_OF_SPACE
-  end
-end
-
-def main_l
+def l_option
   make_total_block_size
   make_files_information
 end
@@ -119,9 +91,41 @@ def display_length_of_max_size_file
   length_of_files.max
 end
 
-options = ARGV.getopts('l')
-if options['l']
-  main_l
-else
-  main
+def other_than_l_option
+  columns = make_columns
+  characters_per_column = count_characters_per_column(columns)
+  rows = align_number_of_files_in_column(columns).transpose
+  rows.each do |row|
+    row_with_margin = row.map.with_index do |file_or_folder, number|
+      file_or_folder.to_s.ljust(characters_per_column[number])
+    end
+    puts row_with_margin.join
+  end
 end
+
+def make_columns
+  return [] if sorted_files.empty?
+
+  elements_per_column = (sorted_files.size.to_f / NUMBER_OF_COLUMN).ceil
+  sorted_files.each_slice(elements_per_column).to_a
+end
+
+def sorted_files
+  Dir.glob('*').sort
+end
+
+def align_number_of_files_in_column(columns)
+  max_size = columns.map(&:size).max
+  columns.map do |column|
+    column.values_at(0...max_size)
+  end
+end
+
+def count_characters_per_column(columns)
+  columns.map do |column|
+    max_number_of_characters = column.max_by(&:size)
+    max_number_of_characters.size + NUMBER_OF_SPACE
+  end
+end
+
+main
