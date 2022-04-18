@@ -23,15 +23,19 @@ end
 
 def display_total_block_size
   total_block_size = 0
-  sorted_files.each do |file|
+  make_sorted_files.each do |file|
     stat = File.lstat(file)
     total_block_size += stat.blocks
   end
   puts "total #{total_block_size}"
 end
 
+def make_sorted_files
+  Dir.glob('*').sort
+end
+
 def display_files_information
-  sorted_files.map do |file|
+  make_sorted_files.map do |file|
     stat = File.lstat(file)
 
     filetype_short = make_filetype(stat.ftype)
@@ -84,7 +88,7 @@ def make_filemode(decimal_number)
 end
 
 def make_length_of_max_size_file
-  length_of_files = sorted_files.map do |file|
+  length_of_files = make_sorted_files.map do |file|
     File.size(file).to_s.length
   end
   length_of_files.max
@@ -103,14 +107,10 @@ def other_than_l_option
 end
 
 def make_columns
-  return [] if sorted_files.empty?
+  return [] if make_sorted_files.empty?
 
-  elements_per_column = (sorted_files.size.to_f / NUMBER_OF_COLUMN).ceil
-  sorted_files.each_slice(elements_per_column).to_a
-end
-
-def sorted_files
-  Dir.glob('*').sort
+  elements_per_column = (make_sorted_files.size.to_f / NUMBER_OF_COLUMN).ceil
+  make_sorted_files.each_slice(elements_per_column).to_a
 end
 
 def align_number_of_files_in_column(columns)
