@@ -17,11 +17,11 @@ def main
 end
 
 def l_option
-  make_total_block_size
-  make_files_information
+  display_total_block_size
+  display_files_information
 end
 
-def make_total_block_size
+def display_total_block_size
   total_block_size = 0
   sorted_files.each do |file|
     stat = File.lstat(file)
@@ -30,7 +30,7 @@ def make_total_block_size
   puts "total #{total_block_size}"
 end
 
-def make_files_information
+def display_files_information
   sorted_files.map do |file|
     stat = File.lstat(file)
 
