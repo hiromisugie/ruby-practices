@@ -34,19 +34,19 @@ def display_files_information
   sorted_files.map do |file|
     stat = File.lstat(file)
 
-    filetype_short = display_filetype(stat.ftype)
+    filetype_short = make_filetype(stat.ftype)
 
     filemode = stat.mode.to_s(8).rjust(6, '0')
-    filemode_owner = display_filemode(filemode[3].to_i)
-    filemode_owned_group = display_filemode(filemode[4].to_i)
-    filemode_other_users = display_filemode(filemode[5].to_i)
+    filemode_owner = make_filemode(filemode[3].to_i)
+    filemode_owned_group = make_filemode(filemode[4].to_i)
+    filemode_other_users = make_filemode(filemode[5].to_i)
     permissions = "#{filemode_owner}#{filemode_owned_group}#{filemode_other_users}" # 式展開が長くなりすぎるのでまとめた
 
     hardlink = stat.nlink
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
-    filesize = File.lstat(file).size.to_s.rjust(display_length_of_max_size_file)
+    filesize = File.lstat(file).size.to_s.rjust(make_length_of_max_size_file)
 
     month = stat.mtime.strftime('%m').to_i.to_s.rjust(2)
     day = stat.mtime.strftime('%e')
@@ -60,7 +60,7 @@ def display_files_information
   end
 end
 
-def display_filetype(filetype)
+def make_filetype(filetype)
   filetypes = {
     'file' => '-',
     'directory' => 'd',
@@ -69,7 +69,7 @@ def display_filetype(filetype)
   filetypes[filetype]
 end
 
-def display_filemode(decimal_number)
+def make_filemode(decimal_number)
   permission = {
     0 => '---',
     1 => '--x',
@@ -83,7 +83,7 @@ def display_filemode(decimal_number)
   permission[decimal_number]
 end
 
-def display_length_of_max_size_file
+def make_length_of_max_size_file
   length_of_files = sorted_files.map do |file|
     File.size(file).to_s.length
   end
