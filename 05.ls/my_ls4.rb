@@ -24,8 +24,7 @@ end
 def display_total_block_size
   total_block_size = 0
   make_sorted_files.each do |file|
-    stat = make_lstat_file(file)
-    total_block_size += stat.blocks
+    total_block_size += make_lstat_file(file).blocks
   end
   puts "total #{total_block_size}"
 end
