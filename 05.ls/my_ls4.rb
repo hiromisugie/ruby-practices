@@ -9,36 +9,33 @@ NUMBER_OF_SPACE = 4
 
 def main
   options = ARGV.getopts('l')
+  files = Dir.glob('*').sort
   if options['l']
-    l_option
+    l_option(files)
   else
-    other_than_l_option
-  end  
+    other_than_l_option(files)
+  end
 end
 
-def l_option
-  display_total_block_size
-  display_files_information
+def l_option(files)
+  display_total_block_size(files)
+  display_files_information(files)
 end
 
-def display_total_block_size
+def display_total_block_size(files)
   total_block_size = 0
-  make_sorted_files.each do |file|
+  files.each do |file|
     total_block_size += make_lstat_file(file).blocks
   end
   puts "total #{total_block_size}"
-end
-
-def make_sorted_files
-  Dir.glob('*').sort
 end
 
 def make_lstat_file(file)
   File.lstat(file)
 end
 
-def display_files_information
-  make_sorted_files.map do |file|
+def display_files_information(files)
+  files.map do |file|
     stat = make_lstat_file(file)
 
     filetype_short = make_filetype(stat.ftype)
@@ -53,7 +50,7 @@ def display_files_information
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
-    filesize = make_lstat_file(file).size.to_s.rjust(make_length_of_max_size_file)
+    filesize = make_lstat_file(file).size.to_s.rjust(make_length_of_max_size_file(files))
 
     month = stat.mtime.strftime('%m').to_i.to_s.rjust(2)
     day = stat.mtime.strftime('%e')
@@ -90,15 +87,15 @@ def make_filemode(decimal_number)
   permission[decimal_number]
 end
 
-def make_length_of_max_size_file
-  length_of_files = make_sorted_files.map do |file|
+def make_length_of_max_size_file(files)
+  length_of_files = files.map do |file|
     File.size(file).to_s.length
   end
   length_of_files.max
 end
 
-def other_than_l_option
-  columns = make_columns
+def other_than_l_option(files)
+  columns = make_columns(files)
   characters_per_column = count_characters_per_column(columns)
   rows = align_number_of_files_in_column(columns).transpose
   rows.each do |row|
@@ -109,12 +106,11 @@ def other_than_l_option
   end
 end
 
-def make_columns
-  sorted_files = make_sorted_files
-  return [] if sorted_files.empty?
+def make_columns(files)
+  return [] if files.empty?
 
-  elements_per_column = (sorted_files.size.to_f / NUMBER_OF_COLUMN).ceil
-  sorted_files.each_slice(elements_per_column).to_a
+  elements_per_column = (files.size.to_f / NUMBER_OF_COLUMN).ceil
+  files.each_slice(elements_per_column).to_a
 end
 
 def align_number_of_files_in_column(columns)
