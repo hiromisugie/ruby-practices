@@ -25,18 +25,14 @@ end
 def display_total_block_size(files)
   total_block_size = 0
   files.each do |file|
-    total_block_size += make_lstat_file(file).blocks
+    total_block_size += File.lstat(file).blocks
   end
   puts "total #{total_block_size}"
 end
 
-def make_lstat_file(file)
-  File.lstat(file)
-end
-
 def display_files_information(files)
   files.map do |file|
-    stat = make_lstat_file(file)
+    stat = File.lstat(file)
 
     filetype_short = make_filetype(stat.ftype)
 
@@ -50,7 +46,7 @@ def display_files_information(files)
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
-    filesize = make_lstat_file(file).size.to_s.rjust(make_length_of_max_size_file(files))
+    filesize = stat.size.to_s.rjust(make_length_of_max_size_file(files))
 
     month = stat.mtime.strftime('%m').to_i.to_s.rjust(2)
     day = stat.mtime.strftime('%e')
