@@ -18,21 +18,27 @@ def main
 end
 
 def l_option(files)
-  display_total_block_size(files)
-  display_files_information(files)
+  file_stats = files.map do |file|
+    {
+      name: file,
+      stat: File.lstat(file)
+    }
+  end
+  display_total_block_size(file_stats)
+  display_files_information(file_stats)
 end
 
-def display_total_block_size(files)
+def display_total_block_size(file_stats)
   total_block_size = 0
-  files.each do |file|
-    total_block_size += File.lstat(file).blocks
+  file_stats.each do |file|
+    total_block_size += file[:stat].blocks
   end
   puts "total #{total_block_size}"
 end
 
-def display_files_information(files)
-  files.map do |file|
-    stat = File.lstat(file)
+def display_files_information(file_stats)
+  file_stats.map do |file|
+    stat = file[:stat]
 
     filetype_short = make_filetype(stat.ftype)
 
@@ -46,16 +52,16 @@ def display_files_information(files)
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
-    filesize = stat.size.to_s.rjust(make_length_of_max_size_file(files))
+    filesize = stat.size.to_s.rjust(make_length_of_max_size_file(file_stats))
 
     month = stat.mtime.strftime('%m').to_i.to_s.rjust(2)
     day = stat.mtime.strftime('%e')
     time = stat.mtime.strftime('%H:%M')
     time_stamp = "#{month} #{day} #{time}" # 式展開が長くなりすぎるのでまとめた
 
-    link_source_of_symbolic_link = " -> #{File.realpath(file).split('/')[-1]}" if File.symlink?(file)
+    link_source_of_symbolic_link = " -> #{File.realpath(file[:name]).split('/')[-1]}" if File.symlink?(file[:name])
 
-    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file}#{link_source_of_symbolic_link}"
+    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file[:name]}#{link_source_of_symbolic_link}"
   end
 end
 
@@ -82,9 +88,9 @@ def make_filemode(decimal_number)
   permission[decimal_number]
 end
 
-def make_length_of_max_size_file(files)
-  length_of_files = files.map do |file|
-    File.size(file).to_s.length
+def make_length_of_max_size_file(file_stats)
+  length_of_files = file_stats.map do |file|
+    File.size(file[:name]).to_s.length
   end
   length_of_files.max
 end
