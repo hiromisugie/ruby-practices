@@ -37,6 +37,7 @@ def display_total_block_size(file_stats)
 end
 
 def display_files_information(file_stats)
+  max_size = make_length_of_max_size_file(file_stats)
   file_stats.map do |file|
     stat = file[:stat]
 
@@ -52,7 +53,7 @@ def display_files_information(file_stats)
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
-    filesize = stat.size.to_s.rjust(make_length_of_max_size_file(file_stats))
+    filesize = stat.size.to_s.rjust(max_size)
 
     month = stat.mtime.strftime('%m').to_i.to_s.rjust(2)
     day = stat.mtime.strftime('%e')
