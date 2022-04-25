@@ -30,16 +30,16 @@ end
 
 def display_total_block_size(file_stats)
   total_block_size = 0
-  file_stats.each do |file|
-    total_block_size += file[:stat].blocks
+  file_stats.each do |file_stat|
+    total_block_size += file_stat[:stat].blocks
   end
   puts "total #{total_block_size}"
 end
 
 def display_files_information(file_stats)
   max_size = make_length_of_max_size_file(file_stats)
-  file_stats.map do |file|
-    stat = file[:stat]
+  file_stats.map do |file_stat|
+    stat = file_stat[:stat]
 
     filetype_short = make_filetype(stat.ftype)
 
@@ -60,9 +60,9 @@ def display_files_information(file_stats)
     time = stat.mtime.strftime('%H:%M')
     time_stamp = "#{month} #{day} #{time}" # 式展開が長くなりすぎるのでまとめた
 
-    link_source_of_symbolic_link = " -> #{File.realpath(file[:name]).split('/')[-1]}" if File.symlink?(file[:name])
+    link_source_of_symbolic_link = " -> #{File.realpath(file_stat[:name]).split('/')[-1]}" if File.symlink?(file_stat[:name])
 
-    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file[:name]}#{link_source_of_symbolic_link}"
+    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_stat[:name]}#{link_source_of_symbolic_link}"
   end
 end
 
@@ -90,8 +90,8 @@ def make_filemode(decimal_number)
 end
 
 def make_length_of_max_size_file(file_stats)
-  length_of_files = file_stats.map do |file|
-    File.size(file[:name]).to_s.length
+  length_of_files = file_stats.map do |file_stat|
+    File.size(file_stat[:name]).to_s.length
   end
   length_of_files.max
 end
