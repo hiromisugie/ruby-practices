@@ -61,9 +61,9 @@ def display_files_information(file_stats)
     time = stat.mtime.strftime('%H:%M')
     time_stamp = "#{month} #{day} #{time}" # 式展開が長くなりすぎるのでまとめた
 
-    link_source_of_symbolic_link = " -> #{File.realpath(file_stat[:name]).split('/')[-1]}" if File.symlink?(file_stat[:name])
+    link_src_of_symbolic_link = " -> #{File.realpath(file_stat[:name]).split('/')[-1]}" if File.symlink?(file_stat[:name])
 
-    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_stat[:name]}#{link_source_of_symbolic_link}"
+    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_stat[:name]}#{link_src_of_symbolic_link}"
   end
 end
 
