@@ -92,7 +92,7 @@ end
 
 def make_length_of_max_size_file(file_stats)
   length_of_files = file_stats.map do |file_stat|
-    File.size(file_stat[:name]).to_s.length
+    file_stat[:stat].size.to_s.length
   end
   length_of_files.max
 end
