@@ -50,7 +50,7 @@ def display_files_information(file_stats)
     filemode_other_users = make_filemode(filemode[5].to_i)
     permissions = "#{filemode_owner}#{filemode_owned_group}#{filemode_other_users}" # 式展開が長くなりすぎるのでまとめた
 
-    hardlink = stat.nlink
+    hardlink = stat.nlink.to_s.rjust(2)
     owner_name = Etc.getpwuid(stat.uid).name
     group_name = Etc.getgrgid(stat.gid).name
 
@@ -63,7 +63,7 @@ def display_files_information(file_stats)
 
     link_src_of_symbolic_link = " -> #{File.realpath(file_stat[:name]).split('/')[-1]}" if File.symlink?(file_stat[:name])
 
-    puts "#{filetype_short}#{permissions}  #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_stat[:name]}#{link_src_of_symbolic_link}"
+    puts "#{filetype_short}#{permissions} #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_stat[:name]}#{link_src_of_symbolic_link}"
   end
 end
 
