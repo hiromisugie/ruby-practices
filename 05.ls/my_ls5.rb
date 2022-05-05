@@ -10,7 +10,7 @@ NUMBER_OF_SPACE = 4
 def main
   options = ARGV.getopts('lar')
   files = get_files(options)
-  options['l'] ? l_option(files) : other_than_l_option(files)
+  options['l'] ? display_l_option(files) : display_other_than_l_option(files)
 end
 
 def get_files(options)
@@ -18,7 +18,7 @@ def get_files(options)
   options['r'] ? files.reverse : files
 end
 
-def l_option(files)
+def display_l_option(files)
   file_stats = files.map do |file|
     {
       name: file,
@@ -97,7 +97,7 @@ def make_length_of_max_size_file(file_stats)
   length_of_files.max
 end
 
-def other_than_l_option(files)
+def display_other_than_l_option(files)
   columns = make_columns(files)
   characters_per_column = count_characters_per_column(columns)
   rows = align_number_of_files_in_column(columns).transpose
