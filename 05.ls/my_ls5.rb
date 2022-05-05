@@ -8,14 +8,14 @@ NUMBER_OF_COLUMN = 3
 NUMBER_OF_SPACE = 4
 
 def main
-  @options = ARGV.getopts('lar')
-  files = get_files(files)
-  @options['l'] ? l_option(files) : other_than_l_option(files)
+  options = ARGV.getopts('lar')
+  files = get_files(options)
+  options['l'] ? l_option(files) : other_than_l_option(files)
 end
 
-def get_files(files)
-  files = @options['a'] ? Dir.glob('*', File::FNM_DOTMATCH).sort : Dir.glob('*').sort
-  @options['r'] ? files.reverse : files
+def get_files(options)
+  files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH).sort : Dir.glob('*').sort
+  options['r'] ? files.reverse : files
 end
 
 def l_option(files)
