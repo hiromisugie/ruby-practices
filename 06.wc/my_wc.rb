@@ -6,7 +6,7 @@ def main
   options = ARGV.getopts('l')
   contents = read_contents
 
-  if read_files.empty?
+  if standart_input?
     display_standard_input(contents, options)
   else
     display_files_input(contents, options)
@@ -58,7 +58,7 @@ def count_bytes(contents)
 end
 
 def read_contents
-  if read_files.empty? # read_filesつまりARGVが無い場合は入力モードにする
+  if standart_input?
     readlines
   else
     read_files.map do |file|
@@ -69,6 +69,10 @@ end
 
 def read_files
   ARGV
+end
+
+def standart_input?
+  ARGV.empty?
 end
 
 main
