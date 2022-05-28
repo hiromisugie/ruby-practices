@@ -21,7 +21,7 @@ def display_standard_input(contents, options)
 end
 
 def display_files_input(contents, options)
-  contents.zip(read_files).each do |content, file|
+  contents.zip(ARGV).each do |content, file|
     lines = count_lines(content).to_s.rjust(8)
     words = count_words(content).to_s.rjust(8)
     bytes = count_bytes(content).to_s.rjust(8)
@@ -61,14 +61,10 @@ def read_contents
   if standart_input?
     readlines
   else
-    read_files.map do |file|
+    ARGV.map do |file|
       File.open(file, &:readlines)
     end
   end
-end
-
-def read_files
-  ARGV
 end
 
 def standart_input?
