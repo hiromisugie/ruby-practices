@@ -17,7 +17,7 @@ def display_standard_input(contents, options)
   lines = count_lines(contents).to_s.rjust(8)
   words = count_words(contents).to_s.rjust(8)
   bytes = count_bytes(contents).to_s.rjust(8)
-  puts options['l'] ? lines.to_s : "#{lines}#{words}#{bytes}"
+  puts options['l'] ? lines : "#{lines}#{words}#{bytes}"
 end
 
 def display_files_input(contents, options)
