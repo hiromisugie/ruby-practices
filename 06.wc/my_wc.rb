@@ -29,7 +29,7 @@ def display_files_input(contents, options)
   end
 
   # ARGV[1]がnil、つまりファイルの指定が1つだったらreturnで、2つ以上だったら以下も実行してtotal行を表示
-  return if ARGV[1].nil?
+  return if contents.size == 1
 
   total_lines = 0
   total_words = 0
