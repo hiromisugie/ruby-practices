@@ -5,47 +5,43 @@ require 'optparse'
 def main
   options = ARGV.getopts('l')
   contents = read_contents
+  lines = count_lines(contents)
+  words = count_words(contents)
+  bytes = count_bytes(contents)
 
-  if standart_input?
-    display_standard_input(contents, options)
+  if standard_input?
+    display_standard_input(options, lines, words, bytes)
   else
-    display_files_input(contents, options)
+    display_files_input(options, contents, lines, words, bytes)
   end
 end
 
-def display_standard_input(contents, options)
-  lines = count_lines(contents).to_s.rjust(8)
-  words = count_words(contents).to_s.rjust(8)
-  bytes = count_bytes(contents).to_s.rjust(8)
-  puts options['l'] ? lines : "#{lines}#{words}#{bytes}"
+def display_standard_input(options, lines, words, bytes)
+  puts options['l'] ? adjust_lines_l_option(lines) : adjust_lines_words_bytes(lines, words, bytes)
 end
 
-def display_files_input(contents, options)
+def display_files_input(options, contents, lines, words, bytes)
   contents.zip(ARGV).each do |content, file|
-    lines = count_lines(content).to_s.rjust(8)
-    words = count_words(content).to_s.rjust(8)
-    bytes = count_bytes(content).to_s.rjust(8)
-    puts options['l'] ? "#{lines} #{file}" : "#{lines}#{words}#{bytes} #{file}"
+    each_lines = count_lines(content)
+    each_words = count_words(content)
+    each_bytes = count_bytes(content)
+    puts options['l'] ? adjust_lines_l_option(each_lines) + " #{file}" : adjust_lines_words_bytes(each_lines, each_words, each_bytes) + " #{file}"
   end
 
   return if contents.size == 1
+  puts options['l'] ? adjust_lines_l_option(lines) + " total" : adjust_lines_words_bytes(lines, words, bytes) + " total"
+end
 
-  total_lines = 0
-  total_words = 0
-  total_bytes = 0
-  contents.each do |content|
-    lines = count_lines(content)
-    words = count_words(content)
-    bytes = count_bytes(content)
-    total_lines += lines
-    total_words += words
-    total_bytes += bytes
-  end
-  puts options['l'] ? "#{total_lines.to_s.rjust(8)} total" : "#{total_lines.to_s.rjust(8)}#{total_words.to_s.rjust(8)}#{total_bytes.to_s.rjust(8)} total"
+def adjust_lines_words_bytes(lines, words, bytes)
+  "#{lines.to_s.rjust(8)}#{words.to_s.rjust(8)}#{bytes.to_s.rjust(8)}"
+end
+
+def adjust_lines_l_option(lines)
+  "#{lines.to_s.rjust(8)}"
 end
 
 def count_lines(contents)
-  contents.count
+  contents.flatten.count
 end
 
 def count_words(contents)
@@ -57,7 +53,7 @@ def count_bytes(contents)
 end
 
 def read_contents
-  if standart_input?
+  if standard_input?
     readlines
   else
     ARGV.map do |file|
@@ -66,7 +62,7 @@ def read_contents
   end
 end
 
-def standart_input?
+def standard_input?
   ARGV.empty?
 end
 
