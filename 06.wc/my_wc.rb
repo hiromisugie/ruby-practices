@@ -17,7 +17,7 @@ def main
 end
 
 def display_standard_input(options, lines, words, bytes)
-  puts options['l'] ? adjust_lines_l_option(lines) : adjust_lines_words_bytes(lines, words, bytes)
+  puts adjust_lines_words_bytes(lines, words, bytes, '', options)
 end
 
 def display_files_input(options, contents, lines, words, bytes)
@@ -25,15 +25,15 @@ def display_files_input(options, contents, lines, words, bytes)
     each_lines = count_lines(content)
     each_words = count_words(content)
     each_bytes = count_bytes(content)
-    puts options['l'] ? adjust_lines_l_option(each_lines) + " #{file}" : adjust_lines_words_bytes(each_lines, each_words, each_bytes) + " #{file}"
+    puts adjust_lines_words_bytes(each_lines, each_words, each_bytes, file, options)
   end
 
   return if contents.size == 1
-  puts options['l'] ? adjust_lines_l_option(lines) + " total" : adjust_lines_words_bytes(lines, words, bytes) + " total"
+  puts adjust_lines_words_bytes(lines, words, bytes, 'total', options)
 end
 
-def adjust_lines_words_bytes(lines, words, bytes)
-  "#{lines.to_s.rjust(8)}#{words.to_s.rjust(8)}#{bytes.to_s.rjust(8)}"
+def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
+  options['l'] ? "#{lines.to_s.rjust(8)}" + " #{file_or_total}" : "#{lines.to_s.rjust(8)}#{words.to_s.rjust(8)}#{bytes.to_s.rjust(8)}" + " #{file_or_total}"
 end
 
 def adjust_lines_l_option(lines)
