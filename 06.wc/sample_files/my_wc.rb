@@ -36,6 +36,10 @@ def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
   options['l'] ? "#{lines.to_s.rjust(8)}" + " #{file_or_total}" : "#{lines.to_s.rjust(8)}#{words.to_s.rjust(8)}#{bytes.to_s.rjust(8)}" + " #{file_or_total}"
 end
 
+def adjust_lines_l_option(lines)
+  "#{lines.to_s.rjust(8)}"
+end
+
 def count_lines(contents)
   contents.flatten.count
 end
