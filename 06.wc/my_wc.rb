@@ -12,15 +12,14 @@ def display_lines_words_bytes(contents, options)
   total_lines = 0
   total_words = 0
   total_bytes = 0
-  contents.each do |content|
-    line_count = content.values.flatten.count
+  contents.each do |key, value|
+    line_count = value.count
     total_lines += line_count
-    word_count = content.values.join.split(/\s+/).count
+    word_count = value.join.split(/\s+/).count
     total_words += word_count
-    byte_count = content.values.join.length
+    byte_count = value.join.length
     total_bytes += byte_count
-    file = content.keys.join
-    puts adjust_lines_words_bytes(line_count, word_count, byte_count, file, options)
+    puts adjust_lines_words_bytes(line_count, word_count, byte_count, key, options)
   end
 
   return if contents.size == 1
@@ -29,16 +28,28 @@ def display_lines_words_bytes(contents, options)
 end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  options['l'] ? lines.to_s.rjust(8) + " #{file_or_total}" : "#{lines.to_s.rjust(8)}#{words.to_s.rjust(8)}#{bytes.to_s.rjust(8)}" + " #{file_or_total}"
+  if options['l']
+    "#{apply_to_s_rjust(lines)} #{file_or_total}"
+  else
+    "#{apply_to_s_rjust(lines)}#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)} #{file_or_total}"
+  end
+end
+
+def apply_to_s_rjust(integer)
+  integer.to_s.rjust(8)
 end
 
 def read_contents
   if ARGV.empty?
-    [{ '' => readlines }]
+    { '' => readlines }
   else
-    ARGV.map do |file|
-      { file => File.open(file, &:readlines) }
+    hash = {}
+    ARGV.each do |file|
+      File.open(file) do |f|
+        hash[f.path] = f.readlines
+      end
     end
+    hash
   end
 end
 
