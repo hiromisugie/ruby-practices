@@ -29,19 +29,19 @@ end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
   ans = String.new()
-  ans << "#{apply_to_s_rjust(lines)}"
-  ans << "#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)}" unless options['l']
+  ans << "#{format_number(lines)}"
+  ans << "#{format_number(words)}#{format_number(bytes)}" unless options['l']
   ans << " #{file_or_total}"
 
   # lオプションとwオプションの場合は以下？
   # ans = String.new()
-  # ans << "#{apply_to_s_rjust(lines)}" if options['l']
-  # ans << "#{apply_to_s_rjust(words)}" if options['w']
-  # ans << "#{apply_to_s_rjust(lines)}#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)}" unless (options['l'] || options['w'])
+  # ans << "#{format_number(lines)}" if options['l']
+  # ans << "#{format_number(words)}" if options['w']
+  # ans << "#{format_number(lines)}#{format_number(words)}#{format_number(bytes)}" unless (options['l'] || options['w'])
   # ans << " #{file_or_total}"
 end
 
-def apply_to_s_rjust(integer)
+def format_number(integer)
   integer.to_s.rjust(8)
 end
 
