@@ -28,11 +28,17 @@ def display_lines_words_bytes(contents, options)
 end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  if options['l']
-    "#{apply_to_s_rjust(lines)} #{file_or_total}"
-  else
-    "#{apply_to_s_rjust(lines)}#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)} #{file_or_total}"
-  end
+  ans = String.new()
+  ans << "#{apply_to_s_rjust(lines)}"
+  ans << "#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)}" unless options['l']
+  ans << " #{file_or_total}"
+
+  # lオプションとwオプションの場合は以下？
+  # ans = String.new()
+  # ans << "#{apply_to_s_rjust(lines)}" if options['l']
+  # ans << "#{apply_to_s_rjust(words)}" if options['w']
+  # ans << "#{apply_to_s_rjust(lines)}#{apply_to_s_rjust(words)}#{apply_to_s_rjust(bytes)}" unless (options['l'] || options['w'])
+  # ans << " #{file_or_total}"
 end
 
 def apply_to_s_rjust(integer)
