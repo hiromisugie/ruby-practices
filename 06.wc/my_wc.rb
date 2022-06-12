@@ -5,10 +5,10 @@ require 'optparse'
 def main
   options = ARGV.getopts('l')
   contents = read_contents
-  display_lines_words_bytes(contents, options)
+  display_result(contents, options)
 end
 
-def display_lines_words_bytes(contents, options)
+def display_result(contents, options)
   total_lines = 0
   total_words = 0
   total_bytes = 0
