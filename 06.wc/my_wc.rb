@@ -12,14 +12,14 @@ def display_lines_words_bytes(contents, options)
   total_lines = 0
   total_words = 0
   total_bytes = 0
-  contents.each do |key, value|
-    line_count = value.count
+  contents.each do |file_name, content|
+    line_count = content.count
     total_lines += line_count
-    word_count = value.join.split(/\s+/).count
+    word_count = content.join.split(/\s+/).count
     total_words += word_count
-    byte_count = value.join.length
+    byte_count = content.join.length
     total_bytes += byte_count
-    puts adjust_lines_words_bytes(line_count, word_count, byte_count, key, options)
+    puts adjust_lines_words_bytes(line_count, word_count, byte_count, file_name, options)
   end
 
   return if contents.size == 1
