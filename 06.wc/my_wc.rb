@@ -49,13 +49,9 @@ def read_contents
   if ARGV.empty?
     { '' => readlines }
   else
-    hash = {}
-    ARGV.each do |file|
-      File.open(file) do |f|
-        hash[f.path] = f.readlines
-      end
+    ARGV.to_h do |file|
+      [file, File.readlines(file)]
     end
-    hash
   end
 end
 
