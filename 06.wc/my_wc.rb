@@ -28,8 +28,8 @@ def display_result(contents, options)
 end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  ans = String.new()
-  ans << "#{format_number(lines)}"
+  ans = +''
+  ans << format_number(lines)
   ans << "#{format_number(words)}#{format_number(bytes)}" unless options['l']
   ans << " #{file_or_total}"
 
