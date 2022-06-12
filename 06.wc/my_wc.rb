@@ -28,17 +28,17 @@ def display_result(contents, options)
 end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  ans = +''
-  ans << format_number(lines)
-  ans << "#{format_number(words)}#{format_number(bytes)}" unless options['l']
-  ans << " #{file_or_total}"
+  result = +''
+  result << format_number(lines)
+  result << "#{format_number(words)}#{format_number(bytes)}" unless options['l']
+  result << " #{file_or_total}"
 
   # lオプションとwオプションの場合は以下？
-  # ans = String.new()
-  # ans << "#{format_number(lines)}" if options['l']
-  # ans << "#{format_number(words)}" if options['w']
-  # ans << "#{format_number(lines)}#{format_number(words)}#{format_number(bytes)}" unless (options['l'] || options['w'])
-  # ans << " #{file_or_total}"
+  # result = +''
+  # result << format_number(lines) if options['l']
+  # result << format_number(words) if options['w']
+  # result << "#{format_number(lines)}#{format_number(words)}#{format_number(bytes)}" unless (options['l'] || options['w'])
+  # result << " #{file_or_total}"
 end
 
 def format_number(integer)
