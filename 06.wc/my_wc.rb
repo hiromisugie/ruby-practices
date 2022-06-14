@@ -28,17 +28,22 @@ def display_result(contents, options)
 end
 
 def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  result = +''
+  result = []
   result << format_number(lines)
-  result << "#{format_number(words)}#{format_number(bytes)}" unless options['l']
+  unless options['l']
+    result << format_number(words)
+    result << format_number(bytes)
+  end
   result << " #{file_or_total}"
+  result.join
 
   # lオプションとwオプションの場合は以下？
-  # result = +''
-  # result << format_number(lines) if options['l']
-  # result << format_number(words) if options['w']
-  # result << "#{format_number(lines)}#{format_number(words)}#{format_number(bytes)}" unless (options['l'] || options['w'])
+  # result = []
+  # result << format_number(lines) if options['l'] || options.empty?
+  # result << format_number(words) if options['w'] || options.empty?
+  # result << format_number(bytes) if options['c'] || options.empty?
   # result << " #{file_or_total}"
+  # result.join
 end
 
 def format_number(integer)
