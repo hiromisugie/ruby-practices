@@ -3,7 +3,7 @@
 require 'optparse'
 
 def main
-  options = ARGV.getopts('l')
+  options = ARGV.getopts('lwc')
   contents = read_contents
   display_result(contents, options)
 end
@@ -19,31 +19,33 @@ def display_result(contents, options)
     total_words += word_count
     byte_count = content.join.length
     total_bytes += byte_count
-    puts adjust_lines_words_bytes(line_count, word_count, byte_count, file_name, options)
+    puts format_line(line_count, word_count, byte_count, file_name, options)
   end
 
   return if contents.size == 1
 
-  puts adjust_lines_words_bytes(total_lines, total_words, total_bytes, 'total', options)
+  puts format_line(total_lines, total_words, total_bytes, 'total', options)
 end
 
-def adjust_lines_words_bytes(lines, words, bytes, file_or_total, options)
-  result = []
-  result << format_number(lines)
-  unless options['l']
-    result << format_number(words)
-    result << format_number(bytes)
-  end
-  result << " #{file_or_total}"
-  result.join
-
-  # lオプションとwオプションの場合は以下？
+def format_line(lines, words, bytes, file_or_total, options)
+  # lオプションのみの場合
   # result = []
-  # result << format_number(lines) if options['l'] || options.empty?
-  # result << format_number(words) if options['w'] || options.empty?
-  # result << format_number(bytes) if options['c'] || options.empty?
+  # result << format_number(lines)
+  # unless options['l']
+  #   result << format_number(words)
+  #   result << format_number(bytes)
+  # end
   # result << " #{file_or_total}"
   # result.join
+
+  # lオプション、wオプション、cオプションの場合
+  result = []
+  show_all = (options == {"l" => false, "w" => false, "c" => false})
+  result << format_number(lines) if options['l'] || show_all
+  result << format_number(words) if options['w'] || show_all
+  result << format_number(bytes) if options['c'] || show_all
+  result << " #{file_or_total}"
+  result.join
 end
 
 def format_number(integer)
