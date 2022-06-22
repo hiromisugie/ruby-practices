@@ -40,7 +40,7 @@ def format_line(lines, words, bytes, file_or_total, options)
 
   # lオプション、wオプション、cオプションの場合
   result = []
-  show_all = (options == { 'l' => false, 'w' => false, 'c' => false })
+  show_all = options.values.none?
   result << format_number(lines) if options['l'] || show_all
   result << format_number(words) if options['w'] || show_all
   result << format_number(bytes) if options['c'] || show_all
@@ -48,8 +48,8 @@ def format_line(lines, words, bytes, file_or_total, options)
   result.join
 end
 
-def format_number(integer)
-  integer.to_s.rjust(8)
+def format_number(n)
+  n.to_s.rjust(8)
 end
 
 def read_contents
