@@ -13,6 +13,3 @@ class Frame
     first_shot.score + second_shot.score + third_shot.score
   end
 end
-
-frame = Frame.new('1', '9')
-frame.score
