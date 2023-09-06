@@ -10,7 +10,3 @@ class Shot
     pins.to_i
   end
 end
-
-shot = Shot.new('X')
-shot.pins
-shot.score
