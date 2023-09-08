@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'shot'
 
 class Frame
@@ -13,11 +15,11 @@ class Frame
     first_shot.to_i_pins + second_shot.to_i_pins + third_shot.to_i_pins
   end
 
-  def is_strike?
+  def strike?
     first_shot.to_i_pins == 10
   end
 
-  def is_spare?
+  def spare?
     first_shot.to_i_pins != 10 && first_shot.to_i_pins + second_shot.to_i_pins == 10
   end
 end

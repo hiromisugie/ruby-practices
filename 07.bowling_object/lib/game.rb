@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'frame'
 
 class Game
@@ -13,9 +15,9 @@ class Game
     frames.each_with_index do |frame, index|
       total_points += frame.sum_pins
 
-      if frame.is_strike? && index < 9
+      if frame.strike? && index < 9
         total_points += strike_bonus(index)
-      elsif frame.is_spare? && index < 9
+      elsif frame.spare? && index < 9
         total_points += spare_bonus(index)
       end
     end
@@ -31,9 +33,9 @@ def strike_bonus(index)
 
   bonus = next_frame.sum_pins
 
-  if next_frame.is_strike? && index < 8
+  if next_frame.strike? && index < 8
     bonus += frames[index + 2].first_shot.to_i_pins
-  elsif next_frame.is_strike? && index == 8
+  elsif next_frame.strike? && index == 8
     bonus -= next_frame.third_shot.to_i_pins
   end
 
