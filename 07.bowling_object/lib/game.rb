@@ -9,48 +9,48 @@ class Game
     @frames = frames.map { |frame| Frame.new(*frame) }
   end
 
-  def points
-    total_points = 0
+  def calculate_scores
+    total_scores = 0
 
     frames.each_with_index do |frame, index|
-      total_points += frame.sum_pins
+      total_scores += frame.sum_pins
 
       if frame.strike? && index < 9
-        total_points += strike_bonus(index)
+        total_scores += add_strike_bonus(index)
       elsif frame.spare? && index < 9
-        total_points += spare_bonus(index)
+        total_scores += add_spare_bonus(index)
       end
     end
 
-    total_points
+    total_scores
   end
 end
 
 private
 
-def arrayed_scores(input_scores = ARGV[0])
-  input_scores.split(',').map(&:to_s)
+def array_inputs(inputs = ARGV[0])
+  inputs.split(',').map(&:to_s)
 end
 
-def adjusted_scores
+def adjust_inputs
   scores = []
 
-  arrayed_scores.each do |shot|
+  array_inputs.each do |shot|
     scores << shot
     scores << '0' if shot == 'X' && scores.size < 18
   end
 
-  adjusted_scores = scores.each_slice(2).to_a
+  adjust_inputs = scores.each_slice(2).to_a
 
-  if adjusted_scores.size == 11
-    adjusted_scores[9] << adjusted_scores[10][0]
-    adjusted_scores.delete_at(10)
+  if adjust_inputs.size == 11
+    adjust_inputs[9] << adjust_inputs[10][0]
+    adjust_inputs.delete_at(10)
   end
 
-  adjusted_scores
+  adjust_inputs
 end
 
-def strike_bonus(index)
+def add_strike_bonus(index)
   next_frame = frames[index + 1]
 
   bonus = next_frame.sum_pins
@@ -60,11 +60,11 @@ def strike_bonus(index)
   bonus
 end
 
-def spare_bonus(index)
+def add_spare_bonus(index)
   next_frame = frames[index + 1]
 
   next_frame.first_shot.to_i_pins
 end
 
-game = Game.new(*adjusted_scores)
-puts game.points
+game = Game.new(*adjust_inputs)
+puts game.calculate_scores
