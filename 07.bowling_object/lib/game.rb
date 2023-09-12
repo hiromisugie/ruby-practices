@@ -28,16 +28,34 @@ end
 
 private
 
+def arrayed_scores(input_scores = ARGV[0])
+  input_scores.split(',').map(&:to_s)
+end
+
+def adjusted_scores
+  scores = []
+
+  arrayed_scores.each do |shot|
+    scores << shot
+    scores << '0' if shot == 'X' && scores.size < 18
+  end
+
+  adjusted_scores = scores.each_slice(2).to_a
+
+  if adjusted_scores.size == 11
+    adjusted_scores[9] << adjusted_scores[10][0]
+    adjusted_scores.delete_at(10)
+  end
+
+  adjusted_scores
+end
+
 def strike_bonus(index)
   next_frame = frames[index + 1]
 
   bonus = next_frame.sum_pins
-
-  if next_frame.strike? && index < 8
-    bonus += frames[index + 2].first_shot.to_i_pins
-  elsif next_frame.strike? && index == 8
-    bonus -= next_frame.third_shot.to_i_pins
-  end
+  bonus += frames[index + 2].first_shot.to_i_pins if next_frame.strike? && index < 8
+  bonus -= next_frame.third_shot.to_i_pins if index == 8
 
   bonus
 end
@@ -47,3 +65,6 @@ def spare_bonus(index)
 
   next_frame.first_shot.to_i_pins
 end
+
+game = Game.new(*adjusted_scores)
+puts game.points
