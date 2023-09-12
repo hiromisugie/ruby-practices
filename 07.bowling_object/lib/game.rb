@@ -13,7 +13,7 @@ class Game
     total_scores = 0
 
     frames.each_with_index do |frame, index|
-      total_scores += frame.sum_pins
+      total_scores += frame.sum_shots
 
       if frame.strike? && index < 9
         total_scores += add_strike_bonus(index)
@@ -53,7 +53,7 @@ end
 def add_strike_bonus(index)
   next_frame = frames[index + 1]
 
-  bonus = next_frame.sum_pins
+  bonus = next_frame.sum_shots
   bonus += frames[index + 2].first_shot.to_i_pins if next_frame.strike? && index < 8
   bonus -= next_frame.third_shot.to_i_pins if index == 8
 
