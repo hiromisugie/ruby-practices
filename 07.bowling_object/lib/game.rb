@@ -24,18 +24,30 @@ class Game
 
     total_scores
   end
+
+  private
+
+  def add_strike_bonus(index)
+    next_frame = frames[index + 1]
+
+    bonus = next_frame.sum_shots
+    bonus += frames[index + 2].first_shot.to_i_pins if next_frame.strike? && index < 8
+    bonus -= next_frame.third_shot.to_i_pins if index == 8
+
+    bonus
+  end
+
+  def add_spare_bonus(index)
+    next_frame = frames[index + 1]
+
+    next_frame.first_shot.to_i_pins
+  end
 end
 
-private
-
-def array_inputs(inputs = ARGV[0])
-  inputs.split(',').map(&:to_s)
-end
-
-def adjust_inputs
+def adjust_inputs(inputs)
   scores = []
 
-  array_inputs.each do |shot|
+  inputs.split(',').map(&:to_s).each do |shot|
     scores << shot
     scores << '0' if shot == 'X' && scores.size < 18
   end
@@ -50,21 +62,6 @@ def adjust_inputs
   adjust_inputs
 end
 
-def add_strike_bonus(index)
-  next_frame = frames[index + 1]
-
-  bonus = next_frame.sum_shots
-  bonus += frames[index + 2].first_shot.to_i_pins if next_frame.strike? && index < 8
-  bonus -= next_frame.third_shot.to_i_pins if index == 8
-
-  bonus
-end
-
-def add_spare_bonus(index)
-  next_frame = frames[index + 1]
-
-  next_frame.first_shot.to_i_pins
-end
-
-game = Game.new(*adjust_inputs)
+inputs = ARGV[0]
+game = Game.new(*adjust_inputs(inputs))
 puts game.calculate_scores

@@ -20,6 +20,6 @@ class Frame
   end
 
   def spare?
-    first_shot.to_i_pins != 10 && first_shot.to_i_pins + second_shot.to_i_pins == 10
+    !strike? && first_shot.to_i_pins + second_shot.to_i_pins == 10
   end
 end

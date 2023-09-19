@@ -8,8 +8,6 @@ class Shot
   end
 
   def to_i_pins
-    return 10 if pins == 'X'
-
-    pins.to_i
+    pins == 'X' ? 10 : pins.to_i
   end
 end
