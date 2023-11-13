@@ -13,12 +13,12 @@ class Game
     total_scores = 0
 
     frames.each_with_index do |frame, index|
-      total_scores += frame.sum_shots
+      total_scores += frame.frame_point
 
       if frame.strike? && index < 9
-        total_scores += add_strike_bonus(index)
+        total_scores += strike_bonus(index)
       elsif frame.spare? && index < 9
-        total_scores += add_spare_bonus(index)
+        total_scores += spare_bonus(index)
       end
     end
 
@@ -27,20 +27,20 @@ class Game
 
   private
 
-  def add_strike_bonus(index)
+  def strike_bonus(index)
     next_frame = frames[index + 1]
 
-    bonus = next_frame.sum_shots
-    bonus += frames[index + 2].first_shot.to_i_pins if next_frame.strike? && index < 8
-    bonus -= next_frame.third_shot.to_i_pins if index == 8
+    bonus = next_frame.frame_point
+    bonus += frames[index + 2].first_shot.score if next_frame.strike? && index < 8
+    bonus -= next_frame.third_shot.score if index == 8
 
     bonus
   end
 
-  def add_spare_bonus(index)
+  def spare_bonus(index)
     next_frame = frames[index + 1]
 
-    next_frame.first_shot.to_i_pins
+    next_frame.first_shot.score
   end
 end
 

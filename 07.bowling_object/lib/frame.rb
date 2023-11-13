@@ -11,15 +11,15 @@ class Frame
     @third_shot = Shot.new(third_shot)
   end
 
-  def sum_shots
-    first_shot.to_i_pins + second_shot.to_i_pins + third_shot.to_i_pins
+  def frame_point
+    first_shot.score + second_shot.score + third_shot.score
   end
 
   def strike?
-    first_shot.to_i_pins == 10
+    first_shot.score == 10
   end
 
   def spare?
-    !strike? && first_shot.to_i_pins + second_shot.to_i_pins == 10
+    !strike? && first_shot.score + second_shot.score == 10
   end
 end

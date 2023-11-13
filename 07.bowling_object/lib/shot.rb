@@ -7,7 +7,7 @@ class Shot
     @pins = pins
   end
 
-  def to_i_pins
+  def score
     pins == 'X' ? 10 : pins.to_i
   end
 end
