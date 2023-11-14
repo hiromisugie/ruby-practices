@@ -13,7 +13,7 @@ class Game
     total_scores = 0
 
     frames.each_with_index do |frame, index|
-      total_scores += frame.frame_point
+      total_scores += frame.point
 
       if frame.strike? && index < 9
         total_scores += strike_bonus(index)
@@ -30,7 +30,7 @@ class Game
   def strike_bonus(index)
     next_frame = frames[index + 1]
 
-    bonus = next_frame.frame_point
+    bonus = next_frame.point
     bonus += frames[index + 2].first_shot.score if next_frame.strike? && index < 8
     bonus -= next_frame.third_shot.score if index == 8
 
