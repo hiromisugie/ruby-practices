@@ -61,7 +61,3 @@ def adjust_inputs(inputs)
 
   adjust_inputs
 end
-
-inputs = ARGV[0]
-game = Game.new(*adjust_inputs(inputs))
-puts game.calculate_scores
