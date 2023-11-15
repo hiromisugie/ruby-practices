@@ -25,6 +25,24 @@ class Game
     total_scores
   end
 
+  def self.adjust_inputs(inputs)
+    scores = []
+
+    inputs.split(',').map(&:to_s).each do |shot|
+      scores << shot
+      scores << '0' if shot == 'X' && scores.size < 18
+    end
+
+    adjust_inputs = scores.each_slice(2).to_a
+
+    if adjust_inputs.size == 11
+      adjust_inputs[9] << adjust_inputs[10][0]
+      adjust_inputs.delete_at(10)
+    end
+
+    adjust_inputs
+  end
+
   private
 
   def strike_bonus(index)
@@ -42,22 +60,4 @@ class Game
 
     next_frame.first_shot.score
   end
-end
-
-def adjust_inputs(inputs)
-  scores = []
-
-  inputs.split(',').map(&:to_s).each do |shot|
-    scores << shot
-    scores << '0' if shot == 'X' && scores.size < 18
-  end
-
-  adjust_inputs = scores.each_slice(2).to_a
-
-  if adjust_inputs.size == 11
-    adjust_inputs[9] << adjust_inputs[10][0]
-    adjust_inputs.delete_at(10)
-  end
-
-  adjust_inputs
 end
