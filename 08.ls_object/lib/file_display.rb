@@ -2,6 +2,9 @@
 
 require_relative 'file_info'
 
+NUMBER_OF_COLUMN = 3
+NUMBER_OF_SPACE = 4
+
 class FileDisplay
   def initialize(file_list, options)
     @file_list = file_list
