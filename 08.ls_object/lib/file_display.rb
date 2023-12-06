@@ -16,18 +16,28 @@ class FileDisplay
 
   def display_l_option(files)
     file_infos = files.map { |file| FileInfo.new(file) }
-
     total_block_size = file_infos.sum(&:block_size)
     puts "total #{total_block_size}"
 
     max_filesize_length = make_length_of_max_size_file(file_infos)
     file_infos.each do |file_info|
-      puts file_info.file_information(max_filesize_length)
+      puts format_file_information(file_info, max_filesize_length)
     end
   end
 
   def make_length_of_max_size_file(file_infos)
     file_infos.map { |file_info| file_info.stat.size.to_s.length }.max
+  end
+
+  def format_file_information(file_info, max_filesize_length)
+    filetype_and_permissions = "#{file_info.filetype_short}#{file_info.permissions}"
+    hardlink = file_info.hardlink
+    owner_and_group = "#{file_info.owner_name}  #{file_info.group_name}"
+    format_filesize = file_info.filesize.rjust(max_filesize_length)
+    time_stamp = file_info.time_stamp
+    name_and_symbolic_link = "#{file_info.file_name}#{file_info.symbolic_link_info}"
+
+    "#{filetype_and_permissions} #{hardlink} #{owner_and_group}  #{format_filesize} #{time_stamp} #{name_and_symbolic_link}"
   end
 
   def display_other_than_l_option(files)

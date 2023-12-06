@@ -15,17 +15,36 @@ class FileInfo
     @stat.blocks
   end
 
-  def file_information(max_filesize_length)
-    filetype_short = make_filetype(@stat.ftype)
-    permissions = format_permissions(@stat.mode)
-    hardlink = @stat.nlink.to_s.rjust(2)
-    owner_name = Etc.getpwuid(@stat.uid).name
-    group_name = Etc.getgrgid(@stat.gid).name
-    filesize = @stat.size.to_s.rjust(max_filesize_length)
-    time_stamp = make_time_stamp(@stat)
-    symbolic_link_info = symbolic_link
+  def filetype_short
+    make_filetype(@stat.ftype)
+  end
 
-    "#{filetype_short}#{permissions} #{hardlink} #{owner_name}  #{group_name}  #{filesize} #{time_stamp} #{file_name}#{symbolic_link_info}"
+  def permissions
+    format_permissions(@stat.mode)
+  end
+
+  def hardlink
+    @stat.nlink.to_s.rjust(2)
+  end
+
+  def owner_name
+    Etc.getpwuid(@stat.uid).name
+  end
+
+  def group_name
+    Etc.getgrgid(@stat.gid).name
+  end
+
+  def filesize
+    @stat.size.to_s
+  end
+
+  def time_stamp
+    make_time_stamp(@stat)
+  end
+
+  def symbolic_link_info
+    symbolic_link
   end
 
   private
