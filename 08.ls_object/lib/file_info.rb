@@ -43,10 +43,6 @@ class FileInfo
     make_time_stamp(@stat)
   end
 
-  def symbolic_link_info
-    symbolic_link
-  end
-
   private
 
   def make_filetype(filetype)
@@ -85,9 +81,5 @@ class FileInfo
     day = stat.mtime.strftime('%e')
     time = stat.mtime.strftime('%H:%M')
     "#{month} #{day} #{time}"
-  end
-
-  def symbolic_link
-    return " -> #{File.realpath(@file_name)}" if File.symlink?(@file_name)
   end
 end
