@@ -38,12 +38,12 @@ class FileDisplay
     owner_and_group = "#{file_info.owner_name}  #{file_info.group_name}"
     format_filesize = file_info.filesize.rjust(max_filesize_length)
     time_stamp = file_info.time_stamp
-    name_and_symbolic_link = "#{file_info.file_name}#{symbolic_link_info(file_info.file_name)}"
+    name_and_symbolic_link = "#{file_info.file_name}#{format_symbolic_link_info(file_info.file_name)}"
 
     "#{filetype_and_permissions} #{hardlink} #{owner_and_group}  #{format_filesize} #{time_stamp} #{name_and_symbolic_link}"
   end
 
-  def symbolic_link_info(file_name)
+  def format_symbolic_link_info(file_name)
     return " -> #{File.realpath(file_name)}" if File.symlink?(file_name)
   end
 
