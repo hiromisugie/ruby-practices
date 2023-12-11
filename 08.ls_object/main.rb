@@ -10,4 +10,4 @@ options = ARGV.getopts('lar')
 file_list = FileList.new(options)
 file_display = FileDisplay.new(file_list, options)
 
-file_display.show
+file_display.execute

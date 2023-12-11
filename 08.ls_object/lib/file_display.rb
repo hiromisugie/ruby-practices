@@ -11,7 +11,7 @@ class FileDisplay
     @options = options
   end
 
-  def show
+  def execute
     @options['l'] ? show_l_option(@file_list.file_names) : show_other_than_l_option(@file_list.file_names)
   end
 
